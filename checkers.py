@@ -19,7 +19,6 @@ board_surface = pygame.Surface((board_width, board_height))
 board_surface_center = [board_surface.get_width()/2, board_surface.get_width()/2]
 board_surface.fill((0, 0, 255))  # Blue background for the board
 
-
 # Main game loop
 running = True
 while running:
@@ -31,6 +30,21 @@ while running:
 
     screen.blit(board_surface, (screen_center[0]-(board_width/2), (screen_center[1]-board_height/2)))
     
+    for i in range(8):
+        for j in range(8):
+            rectangle = pygame.Rect(i*100,j*100,100,100)
+            if (i+1) % 2 == 0:
+                if (j+1) % 2 == 0:
+                    rectangle_color = pygame.Color("white")
+                else:
+                    rectangle_color = pygame.Color("darkslategrey")
+            else:
+                if (j+1) % 2 == 0:
+                    rectangle_color = pygame.Color("darkslategrey")
+                else:
+                    rectangle_color = pygame.Color("white")
+
+            pygame.draw.rect(board_surface, rectangle_color, rectangle)
     
     pygame.display.flip()
 
