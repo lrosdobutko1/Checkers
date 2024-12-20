@@ -1,14 +1,12 @@
 import pygame
 
 class BoardCell:
-    def __init__(self, board_surface, size, color):
+    def __init__(self, board_surface, rect, id):
         
+        self.id = id
         self.board_surface = board_surface
-        self.size = size
-        self.color = color
-        self.is_empty = True
-        self.shape = pygame.Rect(0, 0, size)  # Smaller rectangle inside
-
+        self.rect = rect
+        self.occupied = False
         
-    def draw_self(self):
-        pygame.draw.rect(self.board_surface, self.color, self.shape)
+    def draw_self(self, color):
+        pygame.draw.rect(self.board_surface, color, self.rect)
