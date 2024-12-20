@@ -21,13 +21,14 @@ board_surface.fill((0, 0, 255))  # Blue background for the board
 
 cell_ids = {1:"a", 2:"b", 3:"c", 4:"d", 5:"e", 6:"f", 7:"g", 8:"h"}
 
-for i in range(8, -1, -1):
+for i in range(7, -1, -1):
     
-    print(i)
-    for j in range(8, -1, -1):
+
+    for j in range(7, -1, -1):
 
         rectangle = pygame.Rect(i*100,j*100,100,100)
-        board_cell = board.BoardCell(board_surface, rectangle,i)
+        board_cell = board.BoardCell(board_surface, rectangle,f"{cell_ids[i+1]}{j+1}")
+        print(f"{cell_ids[j+1]}{i+1}")
         if (i+1) % 2 == 0:
             if (j+1) % 2 == 0:
                 rectangle_color = pygame.Color("gray75")
