@@ -4,6 +4,9 @@ import pprint
 class Board:
     
     GRID_NUMBER = 8
+    WHITE = (255,255,255)
+    BLUE = (0,0,255)
+    RED = (255,0,0)
     
     def __init__(self, center: list, grid_size: int):
         
@@ -59,3 +62,44 @@ class Row:
             if distance < 150 and distance > 50:
                 # Draw a line from the cell center to the mouse position
                 pygame.draw.line(surface, (255, 0, 255), cell_center, mouse_pos, 3)
+
+
+class Token:
+    def __init__(self, radius, center):
+        self.radius = (radius/2) * 0.8
+        self.center = center
+        self.legal_moves = []
+        self.move_list = []
+        self.state = "placed"
+        self.valid_states = ["placed", "moving", "held"]
+        
+    def draw_self(self, surface):
+        mouse_pos = pygame.mouse.get_pos()  # Get the current mouse position
+        distance = pygame.math.Vector2(self.center).distance_to(mouse_pos)
+        if distance < self.radius:
+            color = Board.BLUE
+        else:
+            color = Board.RED
+            
+        pygame.draw.circle(surface,color,self.center, self.radius)
+        
+
+        
+    def is_held(self):
+        mouse_pos = pygame.mouse.get_pos()  # Get the current mouse position
+        distance = pygame.math.Vector2(self.center).distance_to(mouse_pos) 
+
+        if distance <= self.radius:
+            if pygame.mouse.get_pressed()[0]:
+                self.state = self.valid_states[1]
+          
+        if self.state == self.valid_states[1]:
+            self.center = pygame.mouse.get_pos()
+            if pygame.mouse.get_pressed()[0]:
+                self.state = self.valid_states[0]
+
+    
+        
+
+        
+    
