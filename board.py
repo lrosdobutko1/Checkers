@@ -23,8 +23,7 @@ class Board:
             
         self.rows = tuple(self.__rows)
         
-    
-        
+     
 class Row:
     def __init__(self, x, y, size):
         self.x = x
@@ -48,58 +47,66 @@ class Row:
                 
             # Draw the cell with the chosen color
             pygame.draw.rect(surface, color, cell)
-            
-    def draw_line(self, surface):
-        # Loop through each cell and check the distance from its center to the mouse position
-        for cell in self.cells:
-            cell_center = cell.center  # Get the center of the cell
-            mouse_pos = pygame.mouse.get_pos()  # Get the current mouse position
-            
-            # Calculate the distance from the center of the cell to the mouse position
-            distance = pygame.math.Vector2(cell_center).distance_to(mouse_pos)
-            
-            # If the mouse is within 300 pixels of the cell center, draw a line
-            if distance < 150 and distance > 50:
-                # Draw a line from the cell center to the mouse position
-                pygame.draw.line(surface, (255, 0, 255), cell_center, mouse_pos, 3)
 
 
 class Token:
     def __init__(self, radius, center):
         self.radius = (radius/2) * 0.8
         self.center = center
+        self.is_king = False
+        self.player = 1
         self.legal_moves = []
         self.move_list = []
-        self.state = "placed"
         self.valid_states = ["placed", "moving", "held"]
+        self.state = self.valid_states[0]
+        self.mouse_pos = (0,0)
+        self.distance = 0
+
+        #self.is_clicked = False
         
     def draw_self(self, surface):
-        mouse_pos = pygame.mouse.get_pos()  # Get the current mouse position
-        distance = pygame.math.Vector2(self.center).distance_to(mouse_pos)
-        if distance < self.radius:
+        self.mouse_pos = pygame.mouse.get_pos()
+        self.distance = pygame.math.Vector2(self.center).distance_to(self.mouse_pos)
+        color = Board.RED
+        
+        if self.distance < self.radius:
             color = Board.BLUE
         else:
             color = Board.RED
             
         pygame.draw.circle(surface,color,self.center, self.radius)
         
-
+    def get_move_list(self, board):
+        self.move_list = []
         
-    def is_held(self):
-        mouse_pos = pygame.mouse.get_pos()  # Get the current mouse position
-        distance = pygame.math.Vector2(self.center).distance_to(mouse_pos) 
-
-        if distance <= self.radius:
+        for row in board.rows:
+            for cell in row.cells:
+                cell_center = cell.center
+                
+                distance = pygame.math.Vector2(self.center).distance_to(cell_center)
+                
+                if distance > self.radius * 2 and distance <= self.radius * 4:
+                    self.move_list.append(cell)
+                #pprint.pprint(self.move_list)
+                
+    def move_token(self):
+        self.mouse_pos = pygame.mouse.get_pos()
+        self.distance = pygame.math.Vector2(self.center).distance_to(self.mouse_pos)
+        
+        if self.distance < self.radius:
             if pygame.mouse.get_pressed()[0]:
-                self.state = self.valid_states[1]
-          
-        if self.state == self.valid_states[1]:
-            self.center = pygame.mouse.get_pos()
-            if pygame.mouse.get_pressed()[0]:
-                self.state = self.valid_states[0]
-
-    
+                self.center = self.mouse_pos
+            
+                
         
 
         
-    
+        
+        
+
+        
+                
+        
+            
+         
+        
