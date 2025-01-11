@@ -38,6 +38,7 @@ class Row:
         self.cells = tuple(self.__cells)
         
     def draw_cells(self, surface):
+        color = pygame.Color("Azure1")
         for row_index, cell in enumerate(self.cells):
             # Check if the cell is in an even or odd column
             if (row_index + (self.y // self.size[1])) % 2 == 0:
@@ -87,12 +88,10 @@ class Token:
                 
                 move1 = pygame.math.Vector2(self.cell_picker.bottomleft).distance_to(cell_center)
                 move2 = pygame.math.Vector2(self.cell_picker.bottomright).distance_to(cell_center)
+                current_cell = pygame.math.Vector2(self.center).distance_to(cell_center)
                 
-                if move1 <= 10 or move2 <= 10:
+                if move1 <= 10 or move2 <= 20 or current_cell <= 75:
                     self.move_list.append(cell)
+                    
+        pprint.pprint(self.move_list)
                 
-    def move_token(self):
-        self.mouse_pos = pygame.mouse.get_pos()
-        self.mouse_distance = pygame.math.Vector2(self.center).distance_to(self.mouse_pos)
-        
-            

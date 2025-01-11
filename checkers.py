@@ -32,12 +32,13 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             
-        if new_token.mouse_distance < new_token.radius:                   
-            #if new_token.mouse_distance < new_token.radius:
+        if new_token.mouse_distance < new_token.radius:
+            print("mouse down")                    
             if pygame.mouse.get_pressed()[0]:
                 new_token.center = new_token.mouse_pos
 
         if event.type == pygame.MOUSEBUTTONUP:
+            print("mouse up")
             for cell in new_token.move_list:
                 if pygame.math.Vector2(new_token.center).distance_to(cell.center) <= new_token.radius:
                     new_token.center = cell.center
@@ -56,7 +57,6 @@ while running:
         row.draw_cells(screen)
     
     #draw tokens
-    new_token.move_token()
     new_token.draw_self(screen)
     new_token.get_move_list(new_board)
     for line in new_token.move_list:
