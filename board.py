@@ -48,7 +48,7 @@ class Row:
                 
             # Draw the cell with the chosen color
             pygame.draw.rect(surface, color, cell)
-
+            
 
 class Token:
     def __init__(self, radius, center):
@@ -76,7 +76,6 @@ class Token:
             
         self.cell_picker = pygame.Rect((self.center[0]-100,self.center[1]-100), (200,200))
            
-        pygame.draw.rect(surface,(255,0,0),self.cell_picker,3)
         pygame.draw.circle(surface,color,self.center, self.radius)
         
     def get_move_list(self, board):
@@ -85,13 +84,23 @@ class Token:
         for row in board.rows:
             for cell in row.cells:
                 cell_center = cell.center
+                move1 = 0
+                move2 = 0
+                move3 = 0
+                move4 = 0
                 
+                current_cell = pygame.math.Vector2(self.center).distance_to(cell_center)
                 move1 = pygame.math.Vector2(self.cell_picker.bottomleft).distance_to(cell_center)
                 move2 = pygame.math.Vector2(self.cell_picker.bottomright).distance_to(cell_center)
-                current_cell = pygame.math.Vector2(self.center).distance_to(cell_center)
+                move3 = pygame.math.Vector2(self.cell_picker.topleft).distance_to(cell_center)
+                move4 = pygame.math.Vector2(self.cell_picker.topright).distance_to(cell_center) 
                 
                 if move1 <= 10 or move2 <= 20 or current_cell <= 75:
                     self.move_list.append(cell)
-                    
+                if self.is_king:
+                    if move3 <= 10 or move4 <= 20 or current_cell <= 75:
+                        self.move_list.append(cell)
         pprint.pprint(self.move_list)
-                
+        
+    #def find_nearest_token(self, token):
+        
