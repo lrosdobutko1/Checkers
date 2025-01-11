@@ -60,20 +60,22 @@ class Token:
         self.valid_states = ["placed", "moving", "held"]
         self.state = self.valid_states[0]
         self.mouse_pos = (0,0)
-        self.distance = 0
-
-        #self.is_clicked = False
+        self.mouse_distance = 0
+        self.cell_picker = pygame.Rect((self.center[0]-100,self.center[1]-100), (200,200))
         
     def draw_self(self, surface):
         self.mouse_pos = pygame.mouse.get_pos()
-        self.distance = pygame.math.Vector2(self.center).distance_to(self.mouse_pos)
+        self.mouse_distance = pygame.math.Vector2(self.center).distance_to(self.mouse_pos)
         color = Board.RED
         
-        if self.distance < self.radius:
+        if self.mouse_distance < self.radius:
             color = Board.BLUE
         else:
             color = Board.RED
             
+        self.cell_picker = pygame.Rect((self.center[0]-100,self.center[1]-100), (200,200))
+           
+        pygame.draw.rect(surface,(255,0,0),self.cell_picker,3)
         pygame.draw.circle(surface,color,self.center, self.radius)
         
     def get_move_list(self, board):
@@ -83,30 +85,14 @@ class Token:
             for cell in row.cells:
                 cell_center = cell.center
                 
-                distance = pygame.math.Vector2(self.center).distance_to(cell_center)
+                move1 = pygame.math.Vector2(self.cell_picker.bottomleft).distance_to(cell_center)
+                move2 = pygame.math.Vector2(self.cell_picker.bottomright).distance_to(cell_center)
                 
-                if distance > self.radius * 2 and distance <= self.radius * 4:
+                if move1 <= 10 or move2 <= 10:
                     self.move_list.append(cell)
-                #pprint.pprint(self.move_list)
                 
     def move_token(self):
         self.mouse_pos = pygame.mouse.get_pos()
-        self.distance = pygame.math.Vector2(self.center).distance_to(self.mouse_pos)
-        
-        if self.distance < self.radius:
-            if pygame.mouse.get_pressed()[0]:
-                self.center = self.mouse_pos
-            
-                
-        
-
-        
-        
-        
-
-        
-                
+        self.mouse_distance = pygame.math.Vector2(self.center).distance_to(self.mouse_pos)
         
             
-         
-        

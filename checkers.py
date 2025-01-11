@@ -32,10 +32,15 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            print("mouse down")
+        if new_token.mouse_distance < new_token.radius:                   
+            #if new_token.mouse_distance < new_token.radius:
+            if pygame.mouse.get_pressed()[0]:
+                new_token.center = new_token.mouse_pos
+
         if event.type == pygame.MOUSEBUTTONUP:
-            print("mouse up")
+            for cell in new_token.move_list:
+                if pygame.math.Vector2(new_token.center).distance_to(cell.center) <= new_token.radius:
+                    new_token.center = cell.center
 
     #game logic
     frame_counter += 1
